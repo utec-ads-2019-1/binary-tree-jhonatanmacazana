@@ -2,10 +2,10 @@
 #define NODE_H
 
 template <typename T>
-class BSTree; 
+class BSTree;
 
 template <typename T>
-class Iterator; 
+class Iterator;
 
 template <typename T>
 class Node {
@@ -14,11 +14,15 @@ class Node {
         Node<T> *left;
         Node<T> *right;
 
-    template<class>
-    friend class BSTree; 
+    public:
+        Node(): data(0) {left = right = NULL;}
+        Node(T data) : data(data){ left = right = NULL; }
 
     template<class>
-    friend class Iterator; 
+    friend class BSTree;
+
+    template<class>
+    friend class Iterator;
 };
 
 #endif
