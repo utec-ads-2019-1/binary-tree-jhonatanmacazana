@@ -10,6 +10,27 @@ class BSTree {
         Node<T> *root;
         int nodes;
 
+        void printPreOrder(Node<T>* node)
+        {
+            std::cout << node->data << std::endl;
+            if(node->left) printPreOrder(node->left);
+            if(node->right) printPreOrder(node->right);
+        }
+
+        void printInOrder(Node<T>* node)
+        {
+            if(node->left) printInOrder(node->left);
+            std::cout << node->data << std::endl;
+            if(node->right) printInOrder(node->right);
+        }
+
+        void printPostOrder(Node<T>* node)
+        {
+            if(node->left) printPostOrder(node->left);
+            if(node->right) printPostOrder(node->right);
+            std::cout << node->data << std::endl;
+        }
+
     public:
         BSTree() : root(nullptr), nodes(0) {};
 
@@ -70,16 +91,23 @@ class BSTree {
             return this->nodes;
         }
 
+        void print(Node<T>* node)
+        {
+            std::cout << node->data << std::endl;
+            if(node->left) print(node->left);
+            if(node->right) print(node->right);
+        }
+
         void traversePreOrder() {
-            // TODO
+            printPreOrder(this->root);
         }
 
         void traverseInOrder() {
-            // TODO
+            printInOrder(this->root);
         }
 
         void traversePostOrder() {
-            // TODO
+            printPostOrder(this->root);
         }
 
         Iterator<T> begin() {
