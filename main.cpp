@@ -27,14 +27,14 @@ int main(int argc, char *argv[]) {
     cout << "Insert 9: " << tree->insert(9) << endl;
     cout << "Size: " << tree->size() << endl;
 
-    cout << endl << "Traverse Pre Order: " << endl;
-    tree->traversePreOrder();
 
-    cout << endl << "Traverse In Order: " << endl;
     tree->traverseInOrder();
 
-    cout << endl << "Traverse Post Order: " << endl;
-    tree->traversePostOrder();
+    cout << "Delete 2: " << tree->remove(2) << endl;
+    cout << "Delete 4: " << tree->remove(4) << endl;
+    cout << "Delete 7: " << tree->remove(7) << endl;
+    tree->traverseInOrder();
+
 
     return EXIT_SUCCESS;
 }

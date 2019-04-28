@@ -31,6 +31,106 @@ class BSTree {
             std::cout << node->data << std::endl;
         }
 
+        bool swapVal(Node<T>* node1, Node<T>* node2)
+        {
+            T tempData;
+            tempData = node1->data;
+            node1->data = node2->data;
+            node2->data = tempData;
+            if(node2->left || node2->right) return false;
+            return true;
+        }
+
+        void kill(Node<T>* node, T data)
+        {
+            if (data == node->data)
+            {
+                if(node->left)
+                {
+                    if(swapVal(node, node->left)){
+                        node->left->left = NULL;
+                        delete node->left;
+                    }
+                    else
+                        kill(node->left, data);
+                }
+                else if(node->right)
+                {
+                    if(swapVal(node, node->right)){
+                        node->right->right = NULL;
+                        delete node->right;
+                    }
+                    else
+                        kill(node->right, data);
+                }
+
+            }
+            else if(data < node->data)
+            {
+                if(data == node->left->data)
+                {
+                    if(node->left->left)
+                    {
+                        if(swapVal(node->left, node->left->left)){
+                            delete node->left->left;
+                            node->left->left = NULL;
+                        }
+                        else
+                            kill(node->left->left, data);
+                    }
+                    else if (node->left->right)
+                    {
+                        if(swapVal(node->left, node->left->right)){
+                            delete node->left->right;
+                            node->left->right = NULL;
+                        }
+                        else
+                            kill(node->left->right, data);
+                    }
+                    else
+                    {
+                        delete node->left;
+                        node->left = NULL;
+                    }
+
+
+                }
+                else
+                    kill(node->left, data);
+            }
+            else
+            {
+                if(data == node->right->data)
+                {
+                    if(node->right->left)
+                    {
+                        if(swapVal(node->right, node->right->left)){
+                            delete node->right->left;
+                            node->right->left = NULL;
+                        }
+                        else
+                            kill(node->right->left, data);
+                    }
+                    else if (node->right->right)
+                    {
+                        if(swapVal(node->right, node->right->right)){
+                            delete node->right->right;
+                            node->right->right = NULL;
+                        }
+                        else
+                            kill(node->right->right, data);
+                    }
+                    else
+                    {
+                        delete node->right;
+                        node->right = NULL;
+                    }
+                }
+                else
+                    kill(node->right, data);
+            }
+        }
+
     public:
         BSTree() : root(nullptr), nodes(0) {};
 
@@ -84,7 +184,11 @@ class BSTree {
         }
 
         bool remove(T data) {
-            // TODO
+            Node<T> *searchNode = this -> root;
+            if (!find(data) || !searchNode) return false;
+            kill(searchNode, data);
+            --nodes;
+            return true;
         }
 
         unsigned int size() {
