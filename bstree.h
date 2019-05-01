@@ -48,20 +48,20 @@ class BSTree {
                 if(node->left)
                 {
                     if(swapVal(node, node->left)){
-                        node->left->left = NULL;
                         delete node->left;
+                        node->left = NULL;
                     }
                     else
-                        kill(node->left, data);
+                        kill(node, data);
                 }
                 else if(node->right)
                 {
                     if(swapVal(node, node->right)){
-                        node->right->right = NULL;
                         delete node->right;
+                        node->right = NULL;
                     }
                     else
-                        kill(node->right, data);
+                        kill(node, data);
                 }
 
             }
@@ -144,13 +144,12 @@ class BSTree {
                     if(searchNode->left) searchNode = searchNode->left;
                     else break;
                 }
-                else
+                else if (data > searchNode->data)
                 {
                     if(searchNode->right) searchNode = searchNode->right;
                     else break;
                 }
-
-                if(searchNode->data == data) return true;
+                else if(searchNode->data == data) return true;
 
             }
 
@@ -215,11 +214,11 @@ class BSTree {
         }
 
         Iterator<T> begin() {
-            return Iterator<T> (this->root); // hoja izquierda
+            return Iterator<T> (this->root);
         }
 
         Iterator<T> end() {
-            return Iterator<T> (NULL); // hoja derecha
+            return Iterator<T> (NULL);
         }
 
         ~BSTree() {

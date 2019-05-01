@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     cout << "Delete 2: " << tree->remove(2) << endl;
     cout << "Delete 4: " << tree->remove(4) << endl;
     cout << "Delete 7: " << tree->remove(7) << endl;
+    cout << "Delete 5: " << tree->remove(5) << endl;
     tree->traverseInOrder();
 
 
