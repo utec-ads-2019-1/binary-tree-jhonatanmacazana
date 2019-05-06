@@ -2,31 +2,55 @@
 #define ITERATOR_H
 
 #include "node.h"
+#include <stack>
 
-template <typename T> 
+template <typename T>
 class Iterator {
     private:
         Node<T> *current;
+        std::stack<Node<T>> stackInc;
+        std::stack<Node<T>> stackDec;
+
+        void pushAll(Node<T> *node)
+        {
+            while(node)
+            {
+                stackInc.push(*node);
+                node = node->left;
+            }
+        }
 
     public:
         Iterator() {
-            // TODO
+            current = NULL;
         }
 
         Iterator(Node<T> *node) {
-            // TODO
+            this->pushAll(node);
+            *current = stackInc.top();
         }
 
-        Iterator<T> operator=(Iterator<T> other) {          
-            // TODO
+        Iterator<T> operator=(Iterator<T> other) {
+            this->current = other.current;
         }
 
         bool operator!=(Iterator<T> other) {
-            // TODO
+            return &(this->current) != &(other.current);
         }
 
         Iterator<T> operator++() {
-            // TODO
+            *current = stackInc.top();
+            stackDec.push(stackInc.top());
+            stackInc.pop();
+            *current = stackInc.top();
+            if(current->right)
+            {
+                stackInc.pop();
+                pushAll(current->right);
+                stackInc.push(*current);
+            }
+
+            return (*this);
         }
 
         Iterator<T> operator--() {
@@ -34,7 +58,8 @@ class Iterator {
         }
 
         T operator*() {
-            // TODO
+            *current = stackInc.top();
+            return current->data;
         }
 };
 
