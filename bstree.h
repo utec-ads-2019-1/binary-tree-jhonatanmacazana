@@ -137,15 +137,15 @@ public:
     }
 
     void traversePreOrder() {
-        printPreOrder(this->root);
+        if(this->root) printPreOrder(this->root);
     }
 
     void traverseInOrder() {
-        printInOrder(this->root);
+        if(this->root) printInOrder(this->root);
     }
 
     void traversePostOrder() {
-        printPostOrder(this->root);
+        if(this->root) printPostOrder(this->root);
     }
 
     Iterator<T> begin() {
