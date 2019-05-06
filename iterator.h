@@ -6,61 +6,97 @@
 
 template <typename T>
 class Iterator {
-    private:
-        Node<T> *current;
-        std::stack<Node<T>> stackInc;
-        std::stack<Node<T>> stackDec;
+private:
+    Node<T> *current;
+    std::stack< Node<T>* > *stackInc;
+    std::stack< Node<T>* > *stackDec;
 
-        void pushAll(Node<T> *node)
+public:
+    Iterator() {
+        current = nullptr;
+        stackInc = new std::stack<Node<T>*>;
+        stackDec = new std::stack<Node<T>*>;
+    }
+
+
+    Iterator(Node<T> *node) {
+        if(!node)
         {
-            while(node)
+            current = nullptr;
+            stackInc = new std::stack<Node<T>*>;
+            stackDec = new std::stack<Node<T>*>;
+        }
+        else
+        {
+            stackInc = new std::stack<Node<T>*>;
+            stackDec = new std::stack<Node<T>*>;
+
+            current = node;
+            while(current->left)
             {
-                stackInc.push(*node);
-                node = node->left;
+                stackInc->push(current);
+                current = current->left;
             }
         }
+    }
 
-    public:
-        Iterator() {
-            current = NULL;
-        }
+    Iterator<T> operator=(Iterator<T> other) {
+        this->current = other.current;
+        *stackInc = other.stackInc;
+        *stackDec = other.stackDec;
+    }
 
-        Iterator(Node<T> *node) {
-            this->pushAll(node);
-            *current = stackInc.top();
-        }
+    bool operator!=(Iterator<T> other) {
+        return &(this->current) != &(other.current);
+    }
 
-        Iterator<T> operator=(Iterator<T> other) {
-            this->current = other.current;
-        }
-
-        bool operator!=(Iterator<T> other) {
-            return &(this->current) != &(other.current);
-        }
-
-        Iterator<T> operator++() {
-            *current = stackInc.top();
-            stackDec.push(stackInc.top());
-            stackInc.pop();
-            *current = stackInc.top();
-            if(current->right)
+    Iterator<T> operator++() {
+        if(!current) return *this;
+        stackDec->push(current);
+        if(current->right)
+        {
+            current = current->right;
+            while(current->left)
             {
-                stackInc.pop();
-                pushAll(current->right);
-                stackInc.push(*current);
+                stackInc->push(current);
+                current = current->left;
             }
-
-            return (*this);
+        }
+        else
+        {
+            if(stackInc->size()>0)
+            {
+                current = stackInc->top();
+                stackInc->pop();
+            }
+            else
+                current = nullptr;
         }
 
-        Iterator<T> operator--() {
-            // TODO
-        }
+        return *this;
+    }
 
-        T operator*() {
-            *current = stackInc.top();
-            return current->data;
+    Iterator<T> operator--() {
+        if(stackDec->empty()) return *this;
+
+        if(!current)
+        {
+            current = stackDec->top();
+            stackDec->pop();
         }
+        else
+        {
+            stackInc->push(current);
+            current = stackDec->top();
+            stackDec->pop();
+        }
+    }
+
+
+    T operator*() {
+        if(!current) return 0;
+        return current->data;
+    }
 };
 
 #endif
