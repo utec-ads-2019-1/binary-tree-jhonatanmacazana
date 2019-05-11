@@ -157,6 +157,7 @@ public:
     }
 
     ~BSTree() {
+        // Falta controlar el caso del árbol vacío
         this->root->killself(this->root);
     }
 };

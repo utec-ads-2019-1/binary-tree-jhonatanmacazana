@@ -90,10 +90,13 @@ public:
             current = stackDec->top();
             stackDec->pop();
         }
+
+        // Falta el return 
     }
 
 
     T operator*() {
+        // Debería botar una excepción, no un return 0
         if(!current) return 0;
         return current->data;
     }
